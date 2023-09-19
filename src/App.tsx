@@ -1,10 +1,19 @@
 import logo from './assets/logo.svg';
 import './App.css';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
 import { fetchTracks } from './lib/fetchTracks';
 
 const App = () => {
+  const { data: tracks } = useQuery({
+    queryKey: ['tracks'],
+    queryFn: fetchTracks,
+  });
+
   const trackUrls = [
     'https://p.scdn.co/mp3-preview/742294f35af9390e799dd96c633788410a332e52',
     'https://p.scdn.co/mp3-preview/5a12483aa3b51331aba663131dbac967ccb33d99',
@@ -15,14 +24,11 @@ const App = () => {
   const [trackIndex, setTrackIndex] = useState(0);
   //let trackIndex = 0;
 
-  const { data: tracks } = useQuery({
-    queryKey: ['tracks'],
-    queryFn: fetchTracks,
-  });
-
   const goToNextTrack = () => {
     setTrackIndex(trackIndex + 1);
   };
+
+  console.log(tracks);
 
   return (
     <div className="App">
@@ -32,6 +38,8 @@ const App = () => {
       </header>
       <div className="App-images">
         <p>Il va falloir modifier le code pour faire un vrai blind test !</p>
+        <p>Il y a {tracks.length} titres.</p>
+        <p>Il y a {tracks[0]?.track.name} titres.</p>
       </div>
       <audio src={trackUrls[trackIndex]} autoPlay controls />
       <button onClick={goToNextTrack}>Next track</button>
