@@ -9,13 +9,26 @@ import {
 import { SavedTrack } from 'spotify-types';
 import { fetchTracks } from './lib/fetchTracks';
 
+function verif() {
+  swal('Bravo', 'Sous-titre', 'success');
+}
+
 const AlbumCover = ({ track }) => {
   const src = track.album.images[0].url; // A changer ;)
-  return <img src={src} style={{ width: 400, height: 400 }} />;
+  return (
+    <div>
+      <img src={src} style={{ width: 400, height: 400 }} />
+      <button onClick={verif}>{track.name}</button>
+    </div>
+  );
 };
 
 const App = () => {
   const [currentTrack, setCurrentTrack] = useState(0);
+
+  const [track1, setTrack1] = useState(0);
+  const [track2, setTrack2] = useState(0);
+  const [track3, setTrack3] = useState(0);
 
   const { data: tracks } = useQuery({
     queryKey: ['tracks'],
@@ -46,11 +59,13 @@ const App = () => {
       </header>
       {tracks && (
         <div className="App-images">
-          <AlbumCover track={tracks[1]?.track} />
+          <AlbumCover track={tracks[trackIndex]?.track} />
+          <AlbumCover track={tracks[trackIndex + 1]?.track} />
+          <AlbumCover track={tracks[trackIndex + 2]?.track} />
           <p>Il va falloir modifier le code pour faire un vrai blind test !</p>
           <p>Il y a {tracks.length} titres.</p>
           <p>Il y a {tracks.length} titres.</p>
-          <p>titre : {tracks[0]?.track.name}</p>
+          <p>titre : {tracks[trackIndex]?.track.name}</p>
         </div>
       )}
       <audio src={tracks[trackIndex]?.track.preview_url} autoPlay controls />
