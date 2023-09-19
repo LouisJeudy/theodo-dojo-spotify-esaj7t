@@ -10,7 +10,7 @@ import { SavedTrack } from 'spotify-types';
 import { fetchTracks } from './lib/fetchTracks';
 
 const AlbumCover = ({ track }) => {
-  const src = 'https://example.com/image.png'; // A changer ;)
+  const src = track.album.images[0].url; // A changer ;)
   return <img src={src} style={{ width: 400, height: 400 }} />;
 };
 
@@ -46,8 +46,9 @@ const App = () => {
       </header>
       {tracks && (
         <div className="App-images">
-          <AlbumCover track={tracks[0]?.track} />
+          <AlbumCover track={tracks[1]?.track} />
           <p>Il va falloir modifier le code pour faire un vrai blind test !</p>
+          <p>Il y a {tracks.length} titres.</p>
           <p>Il y a {tracks.length} titres.</p>
           <p>titre : {tracks[0]?.track.name}</p>
         </div>
