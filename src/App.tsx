@@ -1,6 +1,8 @@
 import logo from './assets/logo.svg';
 import './App.css';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
+import { fetchTracks } from './lib/fetchTracks';
 
 const App = () => {
   const trackUrls = [
@@ -12,6 +14,11 @@ const App = () => {
   ];
   const [trackIndex, setTrackIndex] = useState(0);
   //let trackIndex = 0;
+
+  const { data: tracks } = useQuery({
+    queryKey: ['tracks'],
+    queryFn: fetchTracks,
+  });
 
   const goToNextTrack = () => {
     setTrackIndex(trackIndex + 1);
@@ -26,7 +33,6 @@ const App = () => {
       <div className="App-images">
         <p>Il va falloir modifier le code pour faire un vrai blind test !</p>
       </div>
-      <audio src={trackUrls[3]} autoPlay controls />
       <audio src={trackUrls[trackIndex]} autoPlay controls />
       <button onClick={goToNextTrack}>Next track</button>
       <div className="App-buttons"></div>
