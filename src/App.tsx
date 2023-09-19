@@ -6,9 +6,17 @@ import {
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query';
+import { SavedTrack } from 'spotify-types';
 import { fetchTracks } from './lib/fetchTracks';
 
+const AlbumCover = ({ track }) => {
+  const src = 'https://example.com/image.png'; // A changer ;)
+  return <img src={src} style={{ width: 400, height: 400 }} />;
+};
+
 const App = () => {
+  const [currentTrack, setCurrentTrack] = useState(0);
+
   const { data: tracks } = useQuery({
     queryKey: ['tracks'],
     queryFn: fetchTracks,
@@ -36,11 +44,14 @@ const App = () => {
         <img src={logo} className="App-logo" alt="logo" />
         <h1 className="App-title">Bienvenue sur le blind test</h1>
       </header>
-      <div className="App-images">
-        <p>Il va falloir modifier le code pour faire un vrai blind test !</p>
-        <p>Il y a {tracks.length} titres.</p>
-        <p>Il y a {tracks[0]?.track.name} titres.</p>
-      </div>
+      {tracks && (
+        <div className="App-images">
+          <AlbumCover track={tracks[0]?.track} />
+          <p>Il va falloir modifier le code pour faire un vrai blind test !</p>
+          <p>Il y a {tracks.length} titres.</p>
+          <p>titre : {tracks[0]?.track.name}</p>
+        </div>
+      )}
       <audio src={trackUrls[trackIndex]} autoPlay controls />
       <button onClick={goToNextTrack}>Next track</button>
       <div className="App-buttons"></div>
